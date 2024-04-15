@@ -23,7 +23,7 @@ jobs:
           name: pacoteVeracode
           path: veracode.zip
 
-veracode-sast-pipeline_scan:
+  veracode-sast-pipeline_scan:
     needs: build
     runs-on: ubuntu-latest
     name: veracode pipeline scan
