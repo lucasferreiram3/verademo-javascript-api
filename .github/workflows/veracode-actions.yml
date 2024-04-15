@@ -14,8 +14,9 @@ jobs:
         uses: thedoctor0/zip-release@master
         with:
           filename: 'veracode.zip'
+          exclusions: '*.git* /*node_modules/* .editorconfig *.png* *.pdf* *.md* *Dockerfile *.yml'
           path: .
-          
+
       - name: Publicando Artefato
         uses: actions/upload-artifact@v2
         with:
