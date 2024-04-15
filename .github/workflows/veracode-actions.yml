@@ -32,14 +32,14 @@ jobs:
       - name: checkout repo
         uses: actions/checkout@v3
       
-      - name: Download Artefato
-        uses: actions/download-artifact@v2
+      - name: get archive
+        uses: actions/download-artifact@v3
         with:
           name: pacoteVeracode
 
       - name: pipeline-scan action step
         id: pipeline-scan
-        uses: veracode/Veracode-pipeline-scan-action@v1.0.12
+        uses: veracode/Veracode-pipeline-scan-action@v1.0.13
         with:
           vid: ${{ secrets.VEACODE_API_ID }}
           vkey: ${{ secrets.VERACODE_API_KEY }}
