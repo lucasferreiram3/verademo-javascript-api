@@ -37,9 +37,9 @@ jobs:
         with:
           name: pacoteVeracode
 
-      - name: pipeline-scan action step
+      - name: veracode pipeline-scan
         id: pipeline-scan
-        uses: veracode/Veracode-pipeline-scan-action@v1.0.13
+        uses: veracode/Veracode-pipeline-scan-action@v1.0.15
         with:
           vid: ${{ secrets.VEACODE_API_ID }}
           vkey: ${{ secrets.VERACODE_API_KEY }}
