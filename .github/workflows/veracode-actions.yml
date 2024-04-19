@@ -110,3 +110,29 @@ jobs:
           sandboxname: "${{ github.ref }}"
           version: "${{ github.run_id }}"
           scantimeout: 0
+
+  veracode-sast-policy-scan:
+    needs: [ package, veracode-sast-pipeline_scan, veracode-sca, veracode-iac-scan, veracode-sast-sandbox-scan ]
+    name: sast policy scan
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Check out main branch
+        uses: actions/checkout@v2
+
+      - name: get archive
+        uses: actions/download-artifact@v3
+        with:
+          name: pacoteVeracode
+          
+      - name: veracode sast policy scan
+        uses: veracode/veracode-uploadandscan-action@0.2.6
+        with:
+          appname: 'verademo-javascript-api'
+          createprofile: true
+          teams: '${{ secrets.VERACODE_TEAM }}'
+          filepath: 'veracode.zip'
+          vid: '${{ secrets.VERACODE_API_ID }}'
+          vkey: '${{ secrets.VERACODE_API_KEY }}'
+          version: "${{ github.run_id }}"
+          scantimeout: 12
