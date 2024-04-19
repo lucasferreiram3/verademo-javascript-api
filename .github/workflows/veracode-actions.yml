@@ -82,3 +82,25 @@ jobs:
           format: "table"
           debug: false
           fail_build: false
+
+  veracode-sast-sandbox-scan:
+    needs: [ package, veracode-sast-pipeline_scan, veracode-sca, veracode-iac-scan ]
+    name: sast sandbox scan
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Check out main branch
+        uses: actions/checkout@v2
+          
+      - name: veracode sast sandbox scan
+        uses: veracode/veracode-uploadandscan-action@0.2.6
+        with:
+          appname: 'verademo-javascript-api'
+          createprofile: true
+          filepath: 'upload.zip'
+          vid: '${{ secrets.VERACODE_API_ID }}'
+          vkey: '${{ secrets.VERACODE_API_KEY }}'
+          createsandbox: 'true'
+          sandboxname: "${{ github.ref }}"
+          version: "${{ github.run_id }}"
+          scantimeout: 0
