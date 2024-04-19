@@ -102,6 +102,7 @@ jobs:
         with:
           appname: 'verademo-javascript-api'
           createprofile: true
+          teams: '${{ secrets.VERACODE_TEAM }}'
           filepath: 'veracode.zip'
           vid: '${{ secrets.VERACODE_API_ID }}'
           vkey: '${{ secrets.VERACODE_API_KEY }}'
