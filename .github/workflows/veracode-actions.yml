@@ -41,6 +41,6 @@ jobs:
         id: pipeline-scan
         uses: veracode/Veracode-pipeline-scan-action@v1.0.15
         with:
-          vid: ${{ secrets.VEACODE_API_ID }}
+          vid: ${{ secrets.VERACODE_API_ID }}
           vkey: ${{ secrets.VERACODE_API_KEY }}
           file: "veracode.zip" 
