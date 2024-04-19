@@ -91,13 +91,18 @@ jobs:
     steps:
       - name: Check out main branch
         uses: actions/checkout@v2
+
+      - name: get archive
+        uses: actions/download-artifact@v3
+        with:
+          name: pacoteVeracode
           
       - name: veracode sast sandbox scan
         uses: veracode/veracode-uploadandscan-action@0.2.6
         with:
           appname: 'verademo-javascript-api'
           createprofile: true
-          filepath: 'upload.zip'
+          filepath: 'veracode.zip'
           vid: '${{ secrets.VERACODE_API_ID }}'
           vkey: '${{ secrets.VERACODE_API_KEY }}'
           createsandbox: 'true'
