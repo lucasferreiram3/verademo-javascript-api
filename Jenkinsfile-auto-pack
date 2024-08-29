@@ -1,7 +1,7 @@
 pipeline {
     agent any 
     environment {
-        caminhoPacote = 'uploadToVeracode/veracode-auto-pack-verademo-javascript-api.zip'
+        caminhoPacote = '${WORKSPACE}/uploadToVeracode/veracode-auto-pack-verademo-javascript-api.zip'
         wrapperVersion = '24.7.14.0'
     }
     stages {
@@ -21,8 +21,8 @@ pipeline {
                     sh 'export VERACODE_API_KEY_SECRET="${VKEY}"'
                     sh 'mkdir uploadToVeracode veracodeCli'
                     sh 'cd veracodeCli; curl -fsS https://tools.veracode.com/veracode-cli/install | sh'
-                    sh 'echo ${WORKSPACE}'
-                    //sh './veracode package --source --trust'
+                    sh './veracode package --source ${WORKSPACE} --trust --output ${WORKSPACE}/uploadToVeracode'
+                    sh 'ls -l ${WORKSPACE}/uploadToVeracode'
                 }
             }
         }
