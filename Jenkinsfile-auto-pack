@@ -1,7 +1,7 @@
 pipeline {
     agent any 
     environment {
-        caminhoPacote = '${WORKSPACE}/uploadToVeracode/veracode-auto-pack-verademo-javascript-api.zip'
+        caminhoPacote = '${WORKSPACE}/uploadToVeracode/veracode-auto-pack-verademo-js-api-auto-pack.zip'
         wrapperVersion = '24.7.14.0'
     }
     stages {
@@ -21,8 +21,22 @@ pipeline {
                     sh 'export VERACODE_API_KEY_SECRET=${VKEY}'
                     sh 'mkdir uploadToVeracode veracodeCli'
                     sh 'cd veracodeCli; curl -fsS https://tools.veracode.com/veracode-cli/install | sh'
-                    sh 'veracodeCli/veracode package --source ${WORKSPACE} --trust --output ${WORKSPACE}/uploadToVeracode/upload.zip'
+                    sh 'veracodeCli/veracode package --source ${WORKSPACE} --trust --output ${WORKSPACE}/uploadToVeracode'
                     sh 'ls -l ${WORKSPACE}/uploadToVeracode'
+                }
+            }
+        }
+
+        stage('Veracode SAST - Pipeline Scan') { 
+            steps {
+                withCredentials([usernamePassword(credentialsId: 'veracode-credentials', passwordVariable: 'VKEY', usernameVariable: 'VID')]) {
+                sh 'curl -sSO https://downloads.veracode.com/securityscan/pipeline-scan-LATEST.zip'
+                sh 'unzip -o pipeline-scan-LATEST.zip'
+                sh (""" java -jar pipeline-scan.jar \
+                    --veracode_api_id "${VID}" \
+                    --veracode_api_key "${VKEY}" \
+                    --file ${caminhoPacote} \
+                    """)
                 }
             }
         }
