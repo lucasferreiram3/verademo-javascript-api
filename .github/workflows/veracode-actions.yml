@@ -1,8 +1,6 @@
 name: security-action
 on:
   push:
-    branches: [dev]
-  workflow_dispatch:
 
 jobs:
   package:
