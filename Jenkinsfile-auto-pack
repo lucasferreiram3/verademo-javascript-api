@@ -1,7 +1,7 @@
 pipeline {
     agent any 
     environment {
-        caminhoPacote = '${WORKSPACE}/uploadToVeracode/veracode-auto-pack-verademo-js-api-auto-pack.zip'
+        caminhoPacote = '${WORKSPACE}/uploadToVeracode/veracode-auto-pack-verademo-js-api-auto-pack-js.zip'
         wrapperVersion = '24.7.14.0'
     }
     stages {
