@@ -1,0 +1,31 @@
+pipeline {
+    agent any 
+    environment {
+        caminhoPacote = 'uploadToVeracode/veracode-auto-pack-verademo-javascript-api.zip'
+        wrapperVersion = '24.7.14.0'
+    }
+    stages {
+        stage('Clean') { 
+            steps {
+                sh 'rm -rf pipeline-scan-LATEST.zip pipeline-scan.jar'
+                sh 'rm -rf veracode-wrapper.jar'
+                sh 'rm -rf veracodeCli'
+                sh 'rm -rf uploadToVeracode'
+            }
+        }
+
+        stage('Veracode auto-pack') { 
+            steps {
+                withCredentials([usernamePassword(credentialsId: 'veracode-credentials', passwordVariable: 'VKEY', usernameVariable: 'VID')]) {
+                    sh 'export VERACODE_API_KEY_ID="${VID}"'
+                    sh 'export VERACODE_API_KEY_SECRET="${VKEY}"'
+                    sh 'mkdir uploadToVeracode veracodeCli'
+                    sh 'cd veracodeCli; curl -fsS https://tools.veracode.com/veracode-cli/install | sh'
+                    sh 'chmod +x veracode'
+                    sh 'echo ${WORKSPACE}'
+                    //sh './veracode package --source --trust'
+                }
+            }
+        }
+    }
+}
