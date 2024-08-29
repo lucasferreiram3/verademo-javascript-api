@@ -3,6 +3,7 @@ pipeline {
     environment {
         caminhoPacote = 'uploadToVeracode/veracode-auto-pack-verademo-js-api-auto-pack-js.zip'
         wrapperVersion = '24.7.14.0'
+        appName = 'verademo-javascript-api'
     }
     stages {
         stage('Clean') { 
@@ -23,6 +24,26 @@ pipeline {
                     sh 'cd veracodeCli; curl -fsS https://tools.veracode.com/veracode-cli/install | sh'
                     sh 'veracodeCli/veracode package --source ${WORKSPACE} --trust --output ${WORKSPACE}/uploadToVeracode'
                     sh 'ls -l ${WORKSPACE}/uploadToVeracode'
+                }
+            }
+        }
+
+        stage('Veracode SAST - Sandbox Scan') { 
+            steps {
+                withCredentials([usernamePassword(credentialsId: 'veracode-credentials', passwordVariable: 'VKEY', usernameVariable: 'VID')]) {
+                    sh 'curl -o veracode-wrapper.jar https://repo1.maven.org/maven2/com/veracode/vosp/api/wrappers/vosp-api-wrappers-java/${wrapperVersion}/vosp-api-wrappers-java-${wrapperVersion}.jar'
+                    sh (""" java -jar veracode-wrapper.jar \
+                        -vid "${VID}" \
+                        -vkey "${VKEY}" \
+                        -action uploadandscan \
+                        -appname ${appName} \
+                        -createprofile false \
+                        -filepath ${caminhoPacote} \
+                        -createsandbox true \
+                        -sandboxname "${BRANCH_NAME}" \
+                        -deleteincompletescan true \
+                        -version "${BUILD_NUMBER}"
+                    """)
                 }
             }
         }
