@@ -12,10 +12,7 @@ exports.runCommand = (data, callback) => {
       console.log('Stdout: '+stdout)
       return callback(null,stdout)
     }
-  })
-      
-      
-
+  })    
 };
 
 exports.getFile = (data, callback) => {
