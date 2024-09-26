@@ -6,7 +6,7 @@ jobs:
   package:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
 
       - name: Empacotamento dos arquivos
         uses: thedoctor0/zip-release@master
@@ -16,7 +16,7 @@ jobs:
           path: .
 
       - name: Publicando Artefato
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         with:
           name: pacoteVeracode
           path: veracode.zip
@@ -28,10 +28,10 @@ jobs:
 
     steps:
       - name: checkout repo
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       
       - name: get archive
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: pacoteVeracode
 
@@ -50,7 +50,7 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         
       - name: run veracode sca
         env:
@@ -68,7 +68,7 @@ jobs:
       
     steps:
       - name: checkout repo
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Veracode Container/IaC/Secrets Scanning
         uses: veracode/container_iac_secrets_scanning@v1.0.2
@@ -88,10 +88,10 @@ jobs:
     
     steps:
       - name: Check out main branch
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
 
       - name: get archive
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: pacoteVeracode
           
@@ -116,10 +116,10 @@ jobs:
     
     steps:
       - name: Check out main branch
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
 
       - name: get archive
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: pacoteVeracode
           
