@@ -55,6 +55,7 @@ jobs:
           vkey: ${{ secrets.VERACODE_API_KEY }}
           command: "scan" 
           type: "directory"
+          source: "./"
           format: "table"
           debug: false
           fail_build: false
