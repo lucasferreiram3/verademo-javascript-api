@@ -39,27 +39,6 @@ jobs:
           path: .
           quick: false
 
-  veracode-iac-scan:
-    needs: package
-    runs-on: ubuntu-latest
-    name: veracode container iac secrets scanning
-      
-    steps:
-      - name: checkout repo
-        uses: actions/checkout@v4
-
-      - name: Veracode Container/IaC/Secrets Scanning
-        uses: veracode/container_iac_secrets_scanning@v1.0.3
-        with: 
-          vid: ${{ secrets.VERACODE_API_ID }}
-          vkey: ${{ secrets.VERACODE_API_KEY }}
-          command: "scan" 
-          type: "directory"
-          source: "./"
-          format: "table"
-          debug: false
-          fail_build: false
-
   veracode-sast-sandbox-scan:
     needs: [ package, veracode-sca, veracode-iac-scan ]
     name: sast sandbox scan
