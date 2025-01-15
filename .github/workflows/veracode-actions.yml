@@ -35,7 +35,6 @@ jobs:
           SRCCLR_API_TOKEN: ${{ secrets.SRCCLR_API_TOKEN }}
         uses: veracode/veracode-sca@v2.1.10
         with:
-          github_token: ${{ secrets.GB_TOKEN }}
           path: .
           quick: false
 
@@ -105,11 +104,11 @@ jobs:
         with:
           appname: 'verademo-javascript-api'
           createprofile: true
-          teams: '${{ secrets.VERACODE_TEAM }}'
           filepath: 'veracode.zip'
           vid: '${{ secrets.VERACODE_API_ID }}'
           vkey: '${{ secrets.VERACODE_API_KEY }}'
           version: "${{ github.run_id }}"
+          scantimeout: 0
 
   veracode-sast-pipeline_scan:
     needs: [ package, veracode-sca, veracode-iac_secrets-scan, veracode-sast-sandbox-scan ]
@@ -132,3 +131,4 @@ jobs:
           vid: ${{ secrets.VERACODE_API_ID }}
           vkey: ${{ secrets.VERACODE_API_KEY }}
           file: "veracode.zip"
+          fail_build: true
