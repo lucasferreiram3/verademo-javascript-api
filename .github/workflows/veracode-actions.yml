@@ -21,28 +21,6 @@ jobs:
           name: pacoteVeracode
           path: veracode.zip
 
-  veracode-sast-pipeline_scan:
-    needs: package
-    runs-on: ubuntu-latest
-    name: veracode pipeline scan
-
-    steps:
-      - name: checkout repo
-        uses: actions/checkout@v4
-      
-      - name: get archive
-        uses: actions/download-artifact@v4
-        with:
-          name: pacoteVeracode
-
-      - name: veracode pipeline-scan
-        id: pipeline-scan
-        uses: veracode/Veracode-pipeline-scan-action@v1.0.15
-        with:
-          vid: ${{ secrets.VERACODE_API_ID }}
-          vkey: ${{ secrets.VERACODE_API_KEY }}
-          file: "veracode.zip"
-
   veracode-sca:
     needs: package
     runs-on: ubuntu-latest
@@ -82,7 +60,7 @@ jobs:
           fail_build: false
 
   veracode-sast-sandbox-scan:
-    needs: [ package, veracode-sast-pipeline_scan, veracode-sca, veracode-iac-scan ]
+    needs: [ package, veracode-sca, veracode-iac-scan ]
     name: sast sandbox scan
     runs-on: ubuntu-latest
     
@@ -110,7 +88,7 @@ jobs:
           scantimeout: 0
 
   veracode-sast-policy-scan:
-    needs: [ package, veracode-sast-pipeline_scan, veracode-sca, veracode-iac-scan, veracode-sast-sandbox-scan ]
+    needs: [ package, veracode-sca, veracode-iac-scan, veracode-sast-sandbox-scan ]
     name: sast policy scan
     runs-on: ubuntu-latest
     
@@ -133,4 +111,25 @@ jobs:
           vid: '${{ secrets.VERACODE_API_ID }}'
           vkey: '${{ secrets.VERACODE_API_KEY }}'
           version: "${{ github.run_id }}"
-          scantimeout: 12
+
+  veracode-sast-pipeline_scan:
+    needs: [ package, veracode-sca, veracode-iac-scan, veracode-sast-sandbox-scan ]
+    runs-on: ubuntu-latest
+    name: veracode pipeline scan
+
+    steps:
+      - name: checkout repo
+        uses: actions/checkout@v4
+      
+      - name: get archive
+        uses: actions/download-artifact@v4
+        with:
+          name: pacoteVeracode
+
+      - name: veracode pipeline-scan
+        id: pipeline-scan
+        uses: veracode/Veracode-pipeline-scan-action@v1.0.15
+        with:
+          vid: ${{ secrets.VERACODE_API_ID }}
+          vkey: ${{ secrets.VERACODE_API_KEY }}
+          file: "veracode.zip"
