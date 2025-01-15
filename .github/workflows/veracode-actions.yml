@@ -40,7 +40,7 @@ jobs:
           quick: false
 
   veracode-sast-sandbox-scan:
-    needs: [ package, veracode-sca, veracode-iac-scan ]
+    needs: [ package, veracode-sca ]
     name: sast sandbox scan
     runs-on: ubuntu-latest
     
@@ -68,7 +68,7 @@ jobs:
           scantimeout: 0
 
   veracode-sast-policy-scan:
-    needs: [ package, veracode-sca, veracode-iac-scan, veracode-sast-sandbox-scan ]
+    needs: [ package, veracode-sca, veracode-sast-sandbox-scan ]
     name: sast policy scan
     runs-on: ubuntu-latest
     
@@ -93,7 +93,7 @@ jobs:
           version: "${{ github.run_id }}"
 
   veracode-sast-pipeline_scan:
-    needs: [ package, veracode-sca, veracode-iac-scan, veracode-sast-sandbox-scan ]
+    needs: [ package, veracode-sca, veracode-sast-sandbox-scan ]
     runs-on: ubuntu-latest
     name: veracode pipeline scan
 
