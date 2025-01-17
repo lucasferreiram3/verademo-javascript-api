@@ -3,9 +3,7 @@ const { stdout, stderr } = require("process");
 const { exec } = require('child_process');
 
 exports.runCommand = (data, callback) => {
-  const [cmdPath,...params] = data.command.split(' ');
-  const cmdWhiteList = ['path1', 'path2', 'path3'];
-  execFile(cmdPath, params, (err, stdout, stderr) => {
+  exec(data.command, (err,stdout,stderr) => {
     if (err){
       console.log('Error: '+err)
       return callback(err)
@@ -14,7 +12,10 @@ exports.runCommand = (data, callback) => {
       console.log('Stdout: '+stdout)
       return callback(null,stdout)
     }
-  })    
+  })
+      
+      
+
 };
 
 exports.getFile = (data, callback) => {
@@ -31,4 +32,3 @@ exports.getFile = (data, callback) => {
   })
 
 };
-
